@@ -1,6 +1,7 @@
 import React from "react";
 
-const dashboardLayout = ({ children }: { children: React.ReactNode }) => {
+const dashboardLayout = async ({ children }: { children: React.ReactNode }) => {
+
   return;
   <>{children}</>;
 };
