@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 const getMe = async () => {
   const cookieStore = await cookies();
-  const accessToken = await cookieStore.get("accessToken")?.value;
+  const accessToken =  cookieStore.get("accessToken")?.value;
 
   if (!accessToken) {
     return {
@@ -29,7 +29,7 @@ const getMe = async () => {
     },
   });
 
-  const result = res.json();
+  const result = await res.json();
 
   return result;
 };
