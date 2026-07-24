@@ -15,6 +15,15 @@ const loginPage = () => {
           </div>
 
           <LoginForm></LoginForm>
+          <p className="text-muted-foreground text-center text-sm">
+            {"Did Not Have An Account? "} 
+            <a
+              href="/register"
+              className="font-medium text-foreground underline underline-offset-4"
+            >
+                Sign Up
+            </a>
+          </p>
         </div>
       </div>
     </>

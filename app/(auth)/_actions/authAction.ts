@@ -18,9 +18,9 @@ export const logInAction = async (
   formData: FormData,
 ) => {
   const email = formData.get("email");
-  const pass = formData.get("password");
+  const password = formData.get("password");
 
-  const payload = { email, pass };
+  const payload = { email, password };
 
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/login`, {
     method: "POST",
@@ -48,6 +48,46 @@ export const logInAction = async (
     });
 
     redirect("/dashboard");
+  }
+
+  return result;
+};
+
+export type SignupState = {
+  success: boolean;
+  statusCode?: number;
+  message: string;
+  data?: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+  };
+};
+
+export const signUpAction = async (
+  prevState: SignupState,
+  formData: FormData,
+) => {
+  const name = formData.get("name");
+  const email = formData.get("email");
+  const password = formData.get("password");
+  const role = formData.get("role");
+
+  const payload = { name, email, password, role };
+
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/users/register`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const result = await res.json();
+
+  if (result.success) {
+    redirect("/login");
   }
 
   return result;
