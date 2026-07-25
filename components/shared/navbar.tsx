@@ -33,7 +33,7 @@ type IUser = {
   success: boolean;
   message: string;
   data: {
-    profile: {
+    result: {
       id: string;
       name: string;
       email: string;
@@ -105,10 +105,10 @@ export function Navbar({ user }: NavbarProps) {
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col gap-1">
                     <p className="text-sm font-medium">
-                      {user?.data?.name || user?.data?.result?.name || "User"}
+                      {user?.data?.result.name || "User"}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      {user?.data?.email || user?.data?.result?.email || ""}
+                      {user?.data?.result?.email || ""}
                     </p>
                   </div>
                 </DropdownMenuLabel>
