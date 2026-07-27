@@ -1,39 +1,55 @@
-"use server"
+"use server";
 
 import { cookies } from "next/headers";
 
-export const getPremiumNews = async () => {
+export const getPremiumNews = async ({
+  query,
+}: {
+  query?: { [key: string]: string | string[] | undefined };
+}) => {
+  //  /premium?searchTerm=nextjs
 
-    //  /premium?searchTerm=nextjs
-     const cookieStore = await cookies();
-    
-        const accessToken = cookieStore.get("accessToken")?.value || null;
-    
-        if(!accessToken){
-            // throw new Error("User Not Logged In!");
-    
-            return {
-                success : false,
-                message : "User not logged in!"
-            }
-        }
+  // Bad Approach
+  // const searchTerm = `${search?.searchTerm ? `?searchTerm=${search.searchTerm}` : ""}`;
 
-    const res = await fetch(`${process.env.BACKEND_API_URL}/api/premium`, {
-        headers: {
-            // Authorization : accessToken as unknown as string,
-            // Authorization : `${accessToken}`,
-            // Authorization : `Bearer ${accessToken}`
+  const params = new URLSearchParams();
 
-            Cookie: `accessToken=${accessToken}`
-        },
-        cache : "no-cache",
-        next : {
-            revalidate : 60 * 60 * 6,
-            tags : ["premium-posts"]
-        }
-    });
+  if (query && query.searchTerm) {
+    params.set("searchTerm", query.searchTerm as string);
+  }
 
-    const result = await res.json();
+  const cookieStore = await cookies();
 
-    return result;
-}
+  const accessToken = cookieStore.get("accessToken")?.value || null;
+
+  if (!accessToken) {
+    // throw new Error("User Not Logged In!");
+
+    return {
+      success: false,
+      message: "User not logged in!",
+    };
+  }
+
+  const res = await fetch(
+    `${process.env.BACKEND_API_URL}/api/premium${params.toString()}`,
+    {
+      headers: {
+        // Authorization : accessToken as unknown as string,
+        // Authorization : `${accessToken}`,
+        // Authorization : `Bearer ${accessToken}`
+
+        Cookie: `accessToken=${accessToken}`,
+      },
+      cache: "no-cache",
+      next: {
+        revalidate: 60 * 60 * 6,
+        tags: ["premium-posts"],
+      },
+    },
+  );
+
+  const result = await res.json();
+
+  return result;
+};

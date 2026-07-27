@@ -5,6 +5,7 @@ import type { NextRequest } from "next/server";
 import { jwtUtils } from "./utils/jwt";
 import { cookies } from "next/headers";
 import getNewAccessToken from "./service/refreshToken";
+import { getSubscriptionStatus } from "./app/(public group)/_actions/getSubscriptionStatus";
 
 const AUTH_ROUTES = ["/login", "/register"];
 // const PUBLIC_ROUTES = ["/", "/news", "/login", "/register"]
@@ -12,8 +13,7 @@ const PUBLIC_ROUTES = ["/", "/news"];
 
 // This function can be marked `async` if using `await` inside
 export async function proxy(request: NextRequest) {
-
-    // kon path e jabe seta detect korar jonno
+  // kon path e jabe seta detect korar jonno
   const pathname = request.nextUrl.pathname;
 
   const cookieStore = await cookies();
@@ -98,6 +98,17 @@ export async function proxy(request: NextRequest) {
   }
   if (pathname.startsWith("/author-dashboard") && userRole !== "AUTHOR") {
     return NextResponse.redirect(new URL("/not-found ", request.url));
+  }
+
+  if (pathname === "/premium") {
+    const subscribeStatus = await getSubscriptionStatus();
+    const isActive = Boolean(
+      subscribeStatus?.success && subscribeStatus.data?.isSubscribed,
+    );
+
+    if (!isActive) {
+      return NextResponse.redirect(new URL("/payment ", request.url));
+    }
   }
 
   return NextResponse.next();
