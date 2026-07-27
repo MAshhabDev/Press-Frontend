@@ -100,16 +100,16 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/not-found ", request.url));
   }
 
-  if (pathname === "/premium") {
-    const subscribeStatus = await getSubscriptionStatus();
-    const isActive = Boolean(
-      subscribeStatus?.success && subscribeStatus.data?.isSubscribed,
-    );
+  // if (pathname === "/premium") {
+  //   const subscribeStatus = await getSubscriptionStatus();
+  //   const isActive = Boolean(
+  //     subscribeStatus?.success && subscribeStatus.data?.isSubscribed,
+  //   );
 
-    if (!isActive) {
-      return NextResponse.redirect(new URL("/payment ", request.url));
-    }
-  }
+  //   if (!isActive) {
+  //     return NextResponse.redirect(new URL("/payment ", request.url));
+  //   }
+  // }
 
   return NextResponse.next();
 }
