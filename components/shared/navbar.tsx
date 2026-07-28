@@ -64,7 +64,17 @@ type NavbarProps = {
 export function Navbar({ user }: NavbarProps) {
   const router = useRouter();
   const handleUserMenuAction = async (action: string) => {
-    
+    if (action === "dashboard") {
+      if (user.data.result.role === "USER") {
+        router.push("/dashboard");
+      }
+      if (user.data.result.role === "ADMIN") {
+        router.push("/admin-dashboard");
+      }
+      if (user.data.result.role === "AUTHOR") {
+        router.push("/author-dashboard");
+      }
+    }
 
     if (action === "logout") {
       await logout();
