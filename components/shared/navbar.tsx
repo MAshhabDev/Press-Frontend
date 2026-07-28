@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, Settings, User } from "lucide-react";
+import { LayoutDashboard, LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -27,6 +27,8 @@ const navItems = [
 
 // User menu items configuration
 const userMenuItems = [
+  { label: "DashBoard", icon: LayoutDashboard, action: "dashboard" },
+
   { label: "Profile", icon: User, action: "profile" },
   { label: "Settings", icon: Settings, action: "settings" },
 ];
@@ -62,6 +64,8 @@ type NavbarProps = {
 export function Navbar({ user }: NavbarProps) {
   const router = useRouter();
   const handleUserMenuAction = async (action: string) => {
+    
+
     if (action === "logout") {
       await logout();
       toast.success("User Logged Out Successfully!");
